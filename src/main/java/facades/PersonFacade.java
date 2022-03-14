@@ -49,6 +49,16 @@ public class PersonFacade {
 //            throw new RenameMeNotFoundException("The RenameMe entity with ID: "+id+" Was not found");
         return new PersonDTO(p);
     }
+
+    public long getPersonCount(){
+        EntityManager em = getEntityManager();
+        try {
+            long personCount = (long)em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
+            return personCount;
+        } finally {
+            em.close();
+        }
+    }
     
     public List<PersonDTO> getAllPersons(){
         EntityManager em = emf.createEntityManager();
