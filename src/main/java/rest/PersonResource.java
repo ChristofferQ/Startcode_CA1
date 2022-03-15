@@ -9,6 +9,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 //Todo Remove or change relevant parts before ACTUAL use
@@ -58,6 +59,27 @@ public class PersonResource {
         PersonDTO personDTO = FACADE.create(p);
         return personDTO;
     }
+
+    @Path("person/delete/{id}")
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    public boolean deletePerson(@PathParam("id") long id){
+        boolean personDTO = FACADE.deletePerson(id);
+        return personDTO;
+    }
+
+
+    @Path("person/edit/{id}")
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public PersonDTO editPerson(@PathParam("id") long id, String email, String firstName, String lastName){
+        PersonDTO personDTO = FACADE.editPerson(id, email, firstName, lastName);
+        return personDTO;
+    }
+
+
+
 
 
 }
