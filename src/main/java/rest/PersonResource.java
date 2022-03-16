@@ -7,7 +7,10 @@ import facades.PersonFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -48,15 +51,6 @@ public class PersonResource {
     public String getPersonCount(){
         long count = FACADE.getPersonCount();
         return "{\"count\":"+count+"}";
-    }
-
-    @Path("person/add")
-    @POST
-    @Consumes({MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_JSON})
-    public PersonDTO create(PersonDTO p){
-        PersonDTO personDTO = FACADE.create(p);
-        return personDTO;
     }
 
 
