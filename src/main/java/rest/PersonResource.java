@@ -3,14 +3,12 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
+import entities.Person;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -52,6 +50,32 @@ public class PersonResource {
         long count = FACADE.getPersonCount();
         return "{\"count\":"+count+"}";
     }
+
+    @Path("person/delete/{id}")
+    @DELETE
+    @Produces({MediaType.APPLICATION_JSON})
+    public boolean deletePerson(@PathParam("id") long id){
+        boolean personDTO = FACADE.deletePerson(id);
+        return personDTO;
+    }
+
+    @Path("person/add")
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public PersonDTO create(PersonDTO p){
+        PersonDTO personDTO = FACADE.create(p);
+        return personDTO;
+    }
+
+//    @Path("person/edit/{id}")
+//    @PUT
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public PersonDTO editPerson(@PathParam("id") long id, String email, String firstName, String lastName){
+//        PersonDTO personDTO = FACADE.editPerson(id, email, firstName, lastName);
+//        return personDTO;
+//    }
 
 
 }
