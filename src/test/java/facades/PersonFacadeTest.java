@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.PersonDTO;
 import entities.Person;
 import org.glassfish.json.JsonUtil;
 import utils.EMF_Creator;
@@ -18,6 +19,8 @@ public class PersonFacadeTest {
 
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
+
+    private static Person p1, p2, p3;
 
     public PersonFacadeTest() {
     }
@@ -41,8 +44,9 @@ public class PersonFacadeTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.persist(new Person("emailTest1", "firstNameTest1","lastNameTest1"));
-            em.persist(new Person("emailTest2", "firstNameTest2","lastNameTest2"));
+            em.persist(p1 = new Person("emailTest1", "firstNameTest1","lastNameTest1"));
+            em.persist(p2 = new Person("emailTest2", "firstNameTest2","lastNameTest2"));
+            em.persist(p3 = new Person("emailTest3", "firstNameTest3","lastNameTest3"));
 
             em.getTransaction().commit();
         } finally {
@@ -64,11 +68,37 @@ public class PersonFacadeTest {
     @Test
     public void testGetPersonCount(){
         System.out.println("getPersonCount");
+        EntityManagerFactory emf = null;
         PersonFacade instance = PersonFacade.getPersonFacade(emf);
-        long expected = 2L;
+        long expected = 3L;
         long actual = instance.getPersonCount();
+        assertEquals(expected, actual);
+        System.out.println("Expected = " + expected + "\nActual = " + actual);
+    }
+
+    @Test
+    public void testCreate(){
+        System.out.println("create");
+        String email = "emailTest3";
+        String firstName = "firstNameTest3";
+        String lastName = "lastNameTest3";
+        EntityManagerFactory emf = null;
+        PersonFacade instance = PersonFacade.getPersonFacade(emf);
+        PersonDTO expected = new PersonDTO(email, firstName, lastName);
+        PersonDTO actual = instance.create(new PersonDTO(email, firstName, lastName));
+        expected.setId(actual.getId());
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void testGetPerson(){
+        System.out.println("getById");
+        long id = p3.getId();
+        EntityManagerFactory emf = null;
+        PersonFacade instance = PersonFacade.getPersonFacade(emf);
+        PersonDTO expected = new PersonDTO(p3);
+        PersonDTO actual = instance.getById(id);
+        assertEquals(expected, actual);
+    }
 
 }
