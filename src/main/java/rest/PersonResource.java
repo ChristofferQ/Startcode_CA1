@@ -63,19 +63,22 @@ public class PersonResource {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public PersonDTO create(PersonDTO p){
-        PersonDTO personDTO = FACADE.create(p);
-        return personDTO;
+    public String create(String person){
+        PersonDTO p = GSON.fromJson(person, PersonDTO.class);
+        PersonDTO pNew = FACADE.create(p);
+        return GSON.toJson(pNew);
     }
 
-//    @Path("person/edit/{id}")
-//    @PUT
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_JSON})
-//    public PersonDTO editPerson(@PathParam("id") long id, String email, String firstName, String lastName){
-//        PersonDTO personDTO = FACADE.editPerson(id, email, firstName, lastName);
-//        return personDTO;
-//    }
+    @Path("person/edit/{id}")
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String editPerson(@PathParam("id") long id, String person){
+        PersonDTO p = GSON.fromJson(person, PersonDTO.class);
+        p.setId(id);
+        PersonDTO pEdited = FACADE.editPerson(p);
+        return GSON.toJson(pEdited);
+    }
 
 
 }

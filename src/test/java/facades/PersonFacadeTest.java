@@ -1,6 +1,7 @@
 package facades;
 
 import entities.Person;
+import org.glassfish.json.JsonUtil;
 import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -58,6 +59,15 @@ public class PersonFacadeTest {
     @Test
     public void testAFacadeMethod() throws Exception {
         assertEquals(2, facade.getPersonCount(), "Expects two rows in the database");
+    }
+
+    @Test
+    public void testGetPersonCount(){
+        System.out.println("getPersonCount");
+        PersonFacade instance = PersonFacade.getPersonFacade(emf);
+        long expected = 2L;
+        long actual = instance.getPersonCount();
+        assertEquals(expected, actual);
     }
 
 

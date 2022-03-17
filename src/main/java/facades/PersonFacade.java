@@ -81,23 +81,27 @@ public class PersonFacade {
         }
     }
 
-//    public PersonDTO editPerson(long id, String email, String firstName, String lastName) {
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            Person p = em.find(Person.class, id);
-////                if (p == null)
-////                    throw new RenameMeNotFoundException("The RenameMe entity with ID: "+id+" Was not found");
-////            }
-//            em.getTransaction().begin();
-//            Query query = em.createQuery("UPDATE Person p SET p.email = 'email', p.firstName = 'firstName', p.lastName = 'lastName' WHERE p.id = :id");
-//            query.executeUpdate();
-//            em.getTransaction().commit();
-//            return new PersonDTO(p);
-//        } finally {
-//            em.close();
-//        }
-//
-//    }
+    public PersonDTO editPerson(PersonDTO personDTO) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Person person = em.find(Person.class, personDTO.getId());
+
+            person.setEmail(personDTO.getEmail());
+            person.setFirstName(personDTO.getFirstName());
+            person.setLastName(personDTO.getLastName());
+//                if (person == null)
+//                    throw new RenameMeNotFoundException("The RenameMe entity with ID: "+id+" Was not found");
+//            }
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
+
+    }
+
     
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
