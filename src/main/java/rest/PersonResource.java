@@ -55,10 +55,13 @@ public class PersonResource {
     @DELETE
     @Produces({MediaType.APPLICATION_JSON})
     public boolean deletePerson(@PathParam("id") long id){
+        //Change personDTO to something like status
         boolean personDTO = FACADE.deletePerson(id);
         return personDTO;
     }
 
+
+//Change to response instead of String.
     @Path("person/add")
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
